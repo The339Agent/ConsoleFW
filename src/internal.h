@@ -8,7 +8,7 @@
 #include "CFW/cfw.h"
 
 #define CFW_REQUIRE_INIT()      \
-    if (!__cfx.initialized)     \
+    if (!__cfw.initialized)     \
     {                           \
         return;                 \
     }
@@ -20,7 +20,7 @@ struct __cfx_library
     cfw__bool initialized;
 };
 
-extern __cfx_library __cfx;
+extern __cfx_library __cfw;
 
 // ------------------------------------------------------------------
 // |                        CFW platform API                        |

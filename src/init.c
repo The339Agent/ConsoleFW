@@ -3,7 +3,7 @@
 #include "internal.h"
 
 // Global state variables
-__cfx_library __cfx = { CFW_FALSE };
+__cfx_library __cfw = { CFW_FALSE };
 
 // ------------------------------------------------------------------
 // |                         CFW PUBLIC API                         |
@@ -11,13 +11,13 @@ __cfx_library __cfx = { CFW_FALSE };
 
 CFWAPI cfw__bool cfw_init(void)
 {
-    if (__cfx.initialized)
+    if (__cfw.initialized)
         return CFW_TRUE;
 
     // The first time cfx_init() is called, only the initialized
     // variable is set. To avoid bugs, the entire struct must be set
     // to 0 to empty the data that was there before.
-    memset(&__cfx, 0, sizeof(__cfx));
+    memset(&__cfw, 0, sizeof(__cfw));
     
     if (_cfw_platform_init() == CFW_FALSE)
     {
@@ -25,26 +25,25 @@ CFWAPI cfw__bool cfw_init(void)
         return CFW_FALSE;
     }
 
-    __cfx.initialized = CFW_TRUE;
+    __cfw.initialized = CFW_TRUE;
 
     return CFW_TRUE;
 }
 
 CFWAPI void cfw_terminate(void)
 {
-    if (!__cfx.initialized)
+    if (!__cfw.initialized)
         return;
 
     _cfw_platform_terminate();
 
-    // The memset that sets the entire __cfx struct to 0 also sets
+    // The memset that sets the entire __cfw struct to 0 also sets
     // the initialized variable to false, but it's more clear this
     // way.
-    __cfx.initialized = CFW_FALSE;
+    __cfw.initialized = CFW_FALSE;
 
     // Clear the global data
-    memset(&__cfx, 0, sizeof(__cfx));
-
+    memset(&__cfw, 0, sizeof(__cfw));
 }
 
 CFWAPI void cfw_refresh(void)
