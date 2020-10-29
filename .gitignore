@@ -1,0 +1,39 @@
+# Binary directories
+bin/
+bin-int/
+build/
+
+# Code to ignore
+temp/
+ignore/
+
+# CMake files
+.cmake/
+*.cmake
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+
+# Makefiles
+Makefile*
+
+# IDE files
+
+# Visual Studio Code
+.vscode/
+*.code-workplace
+.history/
+
+# Vim
+[._]*.s[a-v][a-z]
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+tags
+[._]*.un~m
