@@ -97,6 +97,29 @@ immediately without doing anything.
 */
 CFWAPI void cfw_terminate(void);
 
+/* Refresh the console.
+
+This function refreshes the content of the console.
+*/
+CFWAPI void cfw_refresh(void);
+
+/* Clear the console content.
+
+This function clears all content in the console.
+*/
+CFWAPI void cfw_clear(void);
+
+/* Draw a string to the console.
+
+This function draws the provided string to the console at the given
+position.
+
+\param x The X position to start drawing the string to.
+\param y The Y position to start drawing the string to.
+\param str The string to draw at the given position.
+*/
+CFWAPI void cfw_draw_str(int x, int y, const char* str);
+
 #ifdef __cplusplus
 }
 #endif

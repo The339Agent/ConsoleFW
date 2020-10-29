@@ -27,3 +27,8 @@ CFWAPI void _cfw_platform_terminate(void)
 {
     endwin();           // Restore window to normal behavior
 }
+
+CFWAPI void _cfw_platform_refresh(void)
+{
+    refresh();          // Refresh the window and update content
+}

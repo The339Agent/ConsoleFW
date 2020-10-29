@@ -7,6 +7,12 @@
 
 #include "CFW/cfw.h"
 
+#define CFW_REQUIRE_INIT()      \
+    if (!__cfx.initialized)     \
+    {                           \
+        return;                 \
+    }
+
 typedef struct __cfx_library __cfx_library;
 
 struct __cfx_library
@@ -22,5 +28,9 @@ extern __cfx_library __cfx;
 
 cfw__bool _cfw_platform_init(void);
 void _cfw_platform_terminate(void);
+void _cfw_platform_refresh(void);
+
+void _cfw_platform_clear(void);
+void _cfw_platform_draw_str(int x, int y, const char* str);
 
 #endif /* __cfw_internal_h__ */

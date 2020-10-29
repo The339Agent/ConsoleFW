@@ -25,6 +25,8 @@ CFWAPI cfw__bool cfw_init(void)
         return CFW_FALSE;
     }
 
+    __cfx.initialized = CFW_TRUE;
+
     return CFW_TRUE;
 }
 
@@ -43,4 +45,10 @@ CFWAPI void cfw_terminate(void)
     // Clear the global data
     memset(&__cfx, 0, sizeof(__cfx));
 
+}
+
+CFWAPI void cfw_refresh(void)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_refresh();
 }
