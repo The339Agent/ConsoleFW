@@ -1,3 +1,14 @@
+/**
+ * @file ncurses_init.c
+ * @author Nicolai Frigaard
+ * @brief The ncurses implementation of platform-specific init code.
+ * 
+ * This file contains the ncurses implementation of the
+ * platform-specific init code.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #include <stdlib.h>
 
 #include <ncurses.h>

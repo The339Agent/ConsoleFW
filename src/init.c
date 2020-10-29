@@ -1,3 +1,14 @@
+/**
+ * @file init.c
+ * @author Nicolai Frigaard
+ * @brief Implementation of global generic public API functionality.
+ * 
+ * This file contains the definition of the public API of CFW that
+ * controls the entirety of the CFW library.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #include <memory.h>
 
 #include "internal.h"

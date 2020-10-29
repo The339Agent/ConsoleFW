@@ -1,3 +1,14 @@
+/**
+ * @file internal.h
+ * @author Nicolai Frigaard
+ * @brief Internal ConsoleFW header file.
+ * 
+ * This file is the internal header file containing all internal API
+ * in CFW. This header file is used by the internal code base.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #ifndef __cfw_internal_h__
 #define __cfw_internal_h__
 

@@ -1,3 +1,14 @@
+/**
+ * @file cfw.h
+ * @author Nicolai Frigaard
+ * @brief ConsoleFW header file.
+ * 
+ * This file is the header file of ConsoleFW (CFW). All public API in
+ * CFW is available through including this header.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #ifndef __cfw_include_h__
 #define __cfw_include_h__
 
@@ -47,77 +58,84 @@ extern "C" {
 // |                            CFW API                             |
 // ------------------------------------------------------------------
 
-/* The value 0, or false.
-
-Pretty way of writing false in CFW.
-*/
+/**
+ * @brief The value 0, or false.
+ * 
+ * Pretty way of writing false in CFW.
+ */
 #define CFW_FALSE 0
 
-/* The value 1, or true.
-
-Pretty way of writing true in CFW.
-*/
+/**
+ * @brief The value 1, or false.
+ * 
+ * Pretty way of writing false in true.
+ */
 #define CFW_TRUE 1
 
-/* Boolean value.
-
-A boolean value.
-*/
+/**
+ * @brief A boolean value.
+ * 
+ * This is just an int masked as a boolean used where CFW expects the
+ * int to represent a boolean value.
+ */
 typedef int cfw__bool;
 
-/* Initialize CFW.
-
-This function initializes CFW. Before CFW can be used it must be
-initialized. Before you terminate your application CFW should be
-terminated as well to free any allocated resources and free libraries
-used by CFW.
-
-If initialization fails, CFW will be terminated before returning.
-
-If CFW is already initialized when this function is called, it will
-just return `CFW_TRUE` immediately.
-
-\return `CFW_TRUE` if initialization was successfull, `CFW_FALSE` if
-an error occurred.
-*/
+/**
+ * @brief Initialize CFW.
+ * 
+ * This function initializes CFW. Before CFW can be used it must be
+ * initialized. Before you terminate your application CFW should be
+ * terminated as well to free any allocated resources and free the
+ * console.
+ * 
+ * If initialization fails, CFW will be terminated before returning.
+ * 
+ * If CFW is already initialized when this function is called, it
+ * will just return `CFW_TRUE` immediately.
+ * 
+ * @return `CFW_TRUE` if initialization was successfull, `CFW_FALSE`
+ * if an error occurred. 
+ */
 CFWAPI cfw__bool cfw_init(void);
 
-/* Terminate CFW.
-
-This function terminates CFW and frees any resources used by CFW.
-After being called, if reinitialized, CFW will be in the same state
-as it was after the first initialization.
-
-If CFW has been initialized, this function should be called before
-terminating your application. If initialization has failed, this
-function will have already been called.
-
-If the application isn't initialized, this function will return
-immediately without doing anything.
-*/
+/**
+ * @brief Terminate CFW.
+ * 
+ * This function terminates CFW adn frees any resources used by CFW.
+ * 
+ * If CFW has been initialized, this function should be called before
+ * terminating your application. If initialization has failed, this
+ * function will have already been called.
+ * 
+ * If the application isn't initialized, this function will return
+ * immediately without doing anything.
+ */
 CFWAPI void cfw_terminate(void);
 
-/* Refresh the console.
-
-This function refreshes the content of the console.
-*/
+/**
+ * @brief Refresh the console.
+ * 
+ * This function refreshes the content of the console.
+ */
 CFWAPI void cfw_refresh(void);
 
-/* Clear the console content.
-
-This function clears all content in the console.
-*/
+/**
+ * @brief Clear the console content.
+ * 
+ * This function clears all content in the console.
+ */
 CFWAPI void cfw_clear(void);
 
-/* Draw a string to the console.
-
-This function draws the provided string to the console at the given
-position.
-
-\param x The X position to start drawing the string to.
-\param y The Y position to start drawing the string to.
-\param str The string to draw at the given position.
-*/
+/**
+ * @brief Draw a string to the console.
+ * 
+ * This function draws the provided string to the console at the
+ * given position.
+ * 
+ * @param x The X position to start drawing the string to.
+ * @param y The Y position to start drawing the string to.
+ * @param str The string to draw at the given position.
+ */
 CFWAPI void cfw_draw_str(int x, int y, const char* str);
 
 #ifdef __cplusplus

@@ -1,3 +1,14 @@
+/**
+ * @file draw.c
+ * @author Nicolai Frigaard
+ * @brief Implementation of public draw/render API.
+ * 
+ * The definition of API calls used for drawing/rendering to the
+ * console are found in this file.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #include "internal.h"
 
 // ------------------------------------------------------------------

@@ -1,3 +1,14 @@
+/**
+ * @file ncurses_draw.c
+ * @author Nicolai Frigaard
+ * @brief The ncurses implementation of platform-specific draw code.
+ * 
+ * This file contains the ncurses implementation of the
+ * platform-specific code.
+ * 
+ * @copyright Copyright (c) 2020
+ */
+
 #include <unistd.h>
 
 #include <ncurses.h>
