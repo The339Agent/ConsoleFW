@@ -11,10 +11,11 @@ include(GNUInstallDirs)
 
 # Use NCurses for console control
 find_package(Curses REQUIRED)
-list(APPEND cfw_INCLUDE_DIRS "${CURSES_INCLUDE_DIR}")
+
+list(APPEND cfw_INCLUDE_DIRS "${CURSES_INCLUDE_DIRS}")
 list(APPEND cfw_LIBRARIES "${CURSES_LIBRARIES}")
 
-if (NOT CURSES_INCLUDE_DIR)
+if (NOT ${CURSES_FOUND})
     message(FATAL_ERROR "nCurses headers not found; install ncurses development package")
 endif()
 
