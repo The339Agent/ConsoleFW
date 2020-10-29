@@ -73,6 +73,23 @@ extern "C" {
 #define CFW_TRUE 1
 
 /**
+ * @brief Color support.
+ * 
+ * The value to pass to `cfw_is_feature_supported()` to check the
+ * console for color support. If the console has color support, you
+ * can draw to it with colors. If not, the console only supports it's
+ * native colors.
+ * 
+ * Most modern terminals support color. Only outdated and/or very old
+ * terminals do not have colors supported.
+ * 
+ * @code
+ * cfw__bool color_supported = cfw_is_feature_supported(CFW_COLORS);
+ * @endcode
+ */
+#define CFW_COLORS  0x00010001
+
+/**
  * @brief A boolean value.
  * 
  * This is just an int masked as a boolean used where CFW expects the
@@ -118,6 +135,35 @@ CFWAPI void cfw_terminate(void);
  * This function refreshes the content of the console.
  */
 CFWAPI void cfw_refresh(void);
+
+/**
+ * @brief Check if ConsoleFW supports the queried feature.
+ * 
+ * This function checks if CFW supports the feature provided in the
+ * feature parameter. If the value is invalid, the function returns
+ * `CFW_FALSE`. If CFW isn't initialized, the function returns
+ * `CFW_FALSE`.
+ * 
+ * Flags can be:
+ * - CFW_COLORS
+ * 
+ * @param feature The feature to check if is supported by the
+ * console.
+ * @return `CFW_TRUE` if CFW supports the feature, `CFW_FALSE` if it
+ * isn't supported. 
+ */
+CFWAPI cfw__bool cfw_is_feature_supported(int feature);
+
+/**
+ * @brief Get the current size of the console
+ * 
+ * This function gets the current max size of the console and stores
+ * it in the provided int pointers.
+ * 
+ * @param width Pointer to the int to store the console width in.
+ * @param height Pointer to the int to store the console height in.
+ */
+CFWAPI void cfw_get_console_size(int *width, int *height);
 
 /**
  * @brief Clear the console content.

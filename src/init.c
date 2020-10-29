@@ -62,3 +62,15 @@ CFWAPI void cfw_refresh(void)
     CFW_REQUIRE_INIT();
     _cfw_platform_refresh();
 }
+
+CFWAPI cfw__bool cfw_is_feature_supported(int feature)
+{
+    CFW_REQUIRE_INIT_OR_RETURN(CFW_FALSE);
+    return _cfw_platform_is_feature_supported(feature);
+}
+
+CFWAPI void cfw_get_console_size(int *width, int *height)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_get_console_size(width, height);
+}

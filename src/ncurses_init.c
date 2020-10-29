@@ -19,7 +19,7 @@
 // |                        CFW platform API                        |
 // ------------------------------------------------------------------
 
-CFWAPI cfw__bool _cfw_platform_init(void)
+cfw__bool _cfw_platform_init(void)
 {
     initscr();          // Initialize the window
     noecho();           // Don't echo any keypress
@@ -34,12 +34,30 @@ CFWAPI cfw__bool _cfw_platform_init(void)
     return CFW_TRUE;
 }
 
-CFWAPI void _cfw_platform_terminate(void)
+void _cfw_platform_terminate(void)
 {
     endwin();           // Restore window to normal behavior
 }
 
-CFWAPI void _cfw_platform_refresh(void)
+void _cfw_platform_refresh(void)
 {
     refresh();          // Refresh the window and update content
+}
+
+cfw__bool _cfw_platform_is_feature_supported(int feature)
+{
+    switch (feature)
+    {
+    case CFW_COLORS:
+        return has_colors();
+        break;
+    
+    default:
+        return CFW_FALSE;
+    }
+}
+
+void _cfw_platform_get_console_size(int *width, int *height)
+{
+    getmaxyx(stdscr, *height, *width);
 }

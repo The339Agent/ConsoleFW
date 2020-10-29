@@ -18,10 +18,16 @@
 
 #include "CFW/cfw.h"
 
-#define CFW_REQUIRE_INIT()      \
-    if (!__cfw.initialized)     \
-    {                           \
-        return;                 \
+#define CFW_REQUIRE_INIT()              \
+    if (!__cfw.initialized)             \
+    {                                   \
+        return;                         \
+    }
+
+#define CFW_REQUIRE_INIT_OR_RETURN(x)   \
+    if (!__cfw.initialized)             \
+    {                                   \
+        return x;                       \
     }
 
 typedef struct __cfx_library __cfx_library;
@@ -37,11 +43,13 @@ extern __cfx_library __cfw;
 // |                        CFW platform API                        |
 // ------------------------------------------------------------------
 
-cfw__bool _cfw_platform_init(void);
-void _cfw_platform_terminate(void);
-void _cfw_platform_refresh(void);
+cfw__bool   _cfw_platform_init(void);
+void        _cfw_platform_terminate(void);
+void        _cfw_platform_refresh(void);
+cfw__bool   _cfw_platform_is_feature_supported(int feature);
+void        _cfw_platform_get_console_size(int *width, int *height);
 
-void _cfw_platform_clear(void);
-void _cfw_platform_draw_str(int x, int y, const char* str);
+void        _cfw_platform_clear(void);
+void        _cfw_platform_draw_str(int x, int y, const char* str);
 
 #endif /* __cfw_internal_h__ */
