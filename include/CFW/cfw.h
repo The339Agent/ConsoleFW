@@ -47,6 +47,56 @@ extern "C" {
 // |                            CFW API                             |
 // ------------------------------------------------------------------
 
+/* The value 0, or false.
+
+Pretty way of writing false in CFW.
+*/
+#define CFW_FALSE 0
+
+/* The value 1, or true.
+
+Pretty way of writing true in CFW.
+*/
+#define CFW_TRUE 1
+
+/* Boolean value.
+
+A boolean value.
+*/
+typedef int cfw__bool;
+
+/* Initialize CFW.
+
+This function initializes CFW. Before CFW can be used it must be
+initialized. Before you terminate your application CFW should be
+terminated as well to free any allocated resources and free libraries
+used by CFW.
+
+If initialization fails, CFW will be terminated before returning.
+
+If CFW is already initialized when this function is called, it will
+just return `CFW_TRUE` immediately.
+
+\return `CFW_TRUE` if initialization was successfull, `CFW_FALSE` if
+an error occurred.
+*/
+CFWAPI cfw__bool cfw_init(void);
+
+/* Terminate CFW.
+
+This function terminates CFW and frees any resources used by CFW.
+After being called, if reinitialized, CFW will be in the same state
+as it was after the first initialization.
+
+If CFW has been initialized, this function should be called before
+terminating your application. If initialization has failed, this
+function will have already been called.
+
+If the application isn't initialized, this function will return
+immediately without doing anything.
+*/
+CFWAPI void cfw_terminate(void);
+
 #ifdef __cplusplus
 }
 #endif
