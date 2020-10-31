@@ -227,7 +227,8 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c);
  * @param y3 The Y position of the third point.
  * @param c The character to draw the triangle with.
  */
-CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, char c);
+CFWAPI void cfw_draw_triangle(int x1, int y1, int x2,
+                              int y2, int x3, int y3, char c);
 
 /**
  * @brief Draw a quad to the console.
