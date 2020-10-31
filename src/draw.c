@@ -41,13 +41,13 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
 {
     CFW_REQUIRE_INIT();
 
-    // Set the initial grid location of the line
-    int x = x1;
-    int y = y1;
-
     // Get the distance between the two points
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
+
+    // Set the initial grid location of the line
+    int x = x1;
+    int y = y1;
 
     // The count of tiles the line intersects
     int tile_count = 1 + dx + dy;
@@ -59,14 +59,14 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
 
     // The difference between the advancement value of the 
     // advancement on the horizontal and vertical axises
-    float advance_axis = dy - dx;
+    int advance_axis = dx - dy;
     
     // For the math to equal out, the distance must be doubled
     dx *= 2;
     dy *= 2;
 
     // Traverse line
-    for (; tile_count > 0; tile_count--)
+    for (; tile_count > 0; --tile_count)
     {
         // Draw the line character to the tile position
         _cfw_platform_draw_char(x, y, c);
@@ -78,20 +78,27 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
             // same time
             x += x_increment;
             y += y_increment;
-            advance_axis += dy - dx;
-            continue;
+            advance_axis += dx - dy;
+            --tile_count;
         }
         else if (advance_axis > 0)
         {
-            // Advance on the y axis
-            y += y_increment;
-            advance_axis -= dx;
+            // Advance on the x axis
+            x += x_increment;
+            advance_axis -= dy;
         }
         else
         {
-            // Advance on the x axis
-            x += x_increment;
-            advance_axis += dy;
+            // Advance on the y axis
+            y += y_increment;
+            advance_axis += dx;
         }
     }
+}
+
+CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, char c)
+{
+    cfw_draw_line(x1, y1, x2, y2, c);
+    cfw_draw_line(x2, y2, x3, y3, c);
+    cfw_draw_line(x3, y3, x1, y1, c);
 }

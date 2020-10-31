@@ -208,9 +208,26 @@ CFWAPI void cfw_draw_str(int x, int y, const char* str);
  * @param y1 The Y position of the start of the line.
  * @param x2 The X position of the end of the line.
  * @param y2 The Y position of the end of the line.
- * @param c The character to fill the line with.
+ * @param c The character to draw the line with.
  */
 CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c);
+
+/**
+ * @brief Draw a triangle to the console.
+ * 
+ * This function draws a triange of the set character to the console.
+ * 
+ * The triangle is drawn between the three points given.
+ * 
+ * @param x1 The X position of the first point.
+ * @param y1 The Y position of the first point.
+ * @param x2 The X position of the second point.
+ * @param y2 The Y position of the second point.
+ * @param x3 The X position of the third point.
+ * @param y3 The Y position of the third point.
+ * @param c The character to draw the line with.
+ */
+CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, char c);
 
 #ifdef __cplusplus
 }
