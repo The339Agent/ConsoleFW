@@ -183,6 +183,12 @@ void draw_quad_fill(int x1, int y1,
     draw_triangle_fill(x1, y1, x3, y3, x4, y4, c);
 }
 
+// DISCLAIMER: The circle rasterization code is from the
+// OneLoneCoders olcConsoleGameEngine project.
+//
+// Repository:
+// https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h
+
 void draw_circle_lines(int x, int y, int radius, char c)
 {
     int tile_x = 0;
@@ -206,10 +212,32 @@ void draw_circle_lines(int x, int y, int radius, char c)
     }
 }
 
+void draw_strait(int sx, int ex, int ny, char c)
+{
+    for (int i = sx; i <= ex; i++)
+        _cfw_platform_draw_char(i, ny, c);
+}
+
 void draw_circle_fill(int x, int y, int radius, char c)
 {
-    // TODO: Implement this function
+    int tile_x = 0;
+    int tile_y = radius;
+    int f = 3 - 2 * radius;
+
+    if (!radius) return;
+    
+    while (tile_y >= tile_x)
+    {
+        draw_strait(x - tile_x, x + tile_x, y - tile_y, c);
+        draw_strait(x - tile_y, x + tile_y, y - tile_x, c);
+        draw_strait(x - tile_x, x + tile_x, y + tile_y, c);
+        draw_strait(x - tile_y, x + tile_y, y + tile_x, c);
+        if (f < 0) f += 4 * tile_x++ + 6;
+        else f += 4 * (tile_x++ - tile_y--) + 10;
+    }
 }
+
+// End of OneLoneCoder code
 
 // ------------------------------------------------------------------
 // |                         CFW PUBLIC API                         |
