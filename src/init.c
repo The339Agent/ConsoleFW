@@ -10,11 +10,51 @@
  */
 
 #include <memory.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 #include "internal.h"
 
 // Global state variables
 __cfx_library __cfw = { CFW_FALSE };
+
+// Global error callback
+cfw__errorfun __error_callback;
+
+// ------------------------------------------------------------------
+// |                        CFW internal API                        |
+// ------------------------------------------------------------------
+
+void _cfw_input_error(int errorcode, const char *fmt, ...)
+{
+    char message[1024]; // Max size of the final message is 1024
+
+    if (fmt)
+    {
+        va_list va;
+
+        // Set the message to be the formatted string
+        va_start(va, fmt);
+        vsnprintf(message, sizeof(message), fmt, va);
+        va_end(va);
+
+        // Set last char of the message to be the nulltermination
+        // character
+        message[sizeof(message) - 1] = '\0';
+    }
+    else
+    {
+        // Automatically generate message from errorcode
+        switch (errorcode)
+        {
+        default:
+            strcpy(message, "Unknown error");
+        }
+    }
+    
+    if (__error_callback)
+        __error_callback(errorcode, message);
+}
 
 // ------------------------------------------------------------------
 // |                         CFW PUBLIC API                         |
@@ -59,6 +99,12 @@ CFWAPI void cfw_terminate(void)
 
     // Clear the global data
     memset(&__cfw, 0, sizeof(__cfw));
+}
+
+CFWAPI cfw__errorfun cfw_set_error_callback(cfw__errorfun cbfun)
+{
+    CFW_SWAP_POINTERS(__error_callback, cbfun);
+    return cbfun;
 }
 
 CFWAPI void cfw_refresh(void)

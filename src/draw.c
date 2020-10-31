@@ -254,7 +254,11 @@ CFWAPI void cfw_polygon_mode(int mode)
     CFW_REQUIRE_INIT();
 
     // Check if the mode is not one of the permitted modes
-    if (mode < CFW_POINTS || mode > CFW_FILL) return;
+    if (mode < CFW_POINTS || mode > CFW_FILL)
+    {
+        _cfw_input_error(CFW_INVALID_VALUE, "Mode 0x%x is not a valid polygon mode.", mode);
+        return;
+    }
 
     // Set the polygon mode
     __cfw.polygon_mode = mode;

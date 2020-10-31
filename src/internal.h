@@ -18,28 +18,49 @@
 
 #include "CFW/cfw.h"
 
-#define CFW_REQUIRE_INIT()              \
-    if (!__cfw.initialized)             \
-    {                                   \
-        return;                         \
+#define CFW_SWAP_POINTERS(x, y) \
+    {                           \
+        void *temp;             \
+        temp = x;               \
+        x = y;                  \
+        y = temp;               \
     }
 
-#define CFW_REQUIRE_INIT_OR_RETURN(x)   \
-    if (!__cfw.initialized)             \
-    {                                   \
-        return x;                       \
+#define CFW_REQUIRE_INIT()                              \
+    if (!__cfw.initialized)                             \
+    {                                                   \
+        _cfw_input_error(CFW_NOT_INITIALIZED, NULL);    \
+        return;                                         \
+    }
+
+#define CFW_REQUIRE_INIT_OR_RETURN(x)                   \
+    if (!__cfw.initialized)                             \
+    {                                                   \
+        _cfw_input_error(CFW_NOT_INITIALIZED, NULL);    \
+        return x;                                       \
     }
 
 typedef struct __cfx_library __cfx_library;
 
 struct __cfx_library
 {
-    cfw__bool   initialized;
+    cfw__bool       initialized;
 
-    int         polygon_mode;
+    int             polygon_mode;
 };
 
 extern __cfx_library __cfw;
+
+// ------------------------------------------------------------------
+// |                        CFW internal API                        |
+// ------------------------------------------------------------------
+
+#if defined(__GNUC__)
+void _cfw_input_error(int errorcode, const char *fmt, ...)
+    __attribute__((format(printf, 2, 3)));
+#else
+void _cfw_input_error(int errorcode, const char *fmt, ...);
+#endif
 
 // ------------------------------------------------------------------
 // |                        CFW platform API                        |

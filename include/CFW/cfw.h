@@ -73,6 +73,20 @@ extern "C" {
 #define CFW_TRUE 1
 
 /**
+ * @brief CFW not initialized error.
+ * 
+ * A argument passed into a CFW function was an invalid value.
+ */
+#define CFW_NOT_INITIALIZED 0x00010001
+
+/**
+ * @brief CFW invalid value.
+ * 
+ * This error is for when a value given to a CFW function is invalid.
+ */
+#define CFW_INVALID_VALUE   0x00010002
+
+/**
  * @brief Color support.
  * 
  * The value to pass to `cfw_is_feature_supported()` to check the
@@ -87,28 +101,28 @@ extern "C" {
  * cfw__bool color_supported = cfw_is_feature_supported(CFW_COLORS);
  * @endcode
  */
-#define CFW_COLORS  0x00010001
+#define CFW_COLORS  0x00020001
 
 /**
  * @brief Points polygon mode.
  * 
  * Polygons have their points drawn.
  */
-#define CFW_POINTS  0x00020001
+#define CFW_POINTS  0x00030001
 
 /**
  * @brief Lines polygon mode.
  * 
  * Boundaries of polygons are drawn as lines.
  */
-#define CFW_LINES   0x00020002
+#define CFW_LINES   0x00030002
 
 /**
  * @brief Fill polygon mode.
  * 
  * The entirety of the polygon is drawn, including the interior.
  */
-#define CFW_FILL    0x00020003
+#define CFW_FILL    0x00030003
 
 /**
  * @brief A boolean value.
@@ -117,6 +131,16 @@ extern "C" {
  * int to represent a boolean value.
  */
 typedef int cfw__bool;
+
+/**
+ * @brief Function pointer for an error callback.
+ * 
+ * This is the function pointer for an error callback.
+ * 
+ * @param errorcode The error code that triggered the callback.
+ * @param desc A description of the error.
+ */
+typedef void (* cfw__errorfun)(int,const char *);
 
 /**
  * @brief Initialize CFW.
@@ -149,6 +173,26 @@ CFWAPI cfw__bool cfw_init(void);
  * immediately without doing anything.
  */
 CFWAPI void cfw_terminate(void);
+
+/**
+ * @brief Sets the error callback.
+ * 
+ * This function sets the error callback of CFW.
+ * 
+ * This function can be bound before initializing CFW, and is 
+ * independent of its init state. It will also persist after
+ * termination of CFW.
+ * 
+ * Whenever an error occurs in CFW, the currently bound error 
+ * callback is called with the errorcode of the error and a
+ * const char* describing the error.
+ * 
+ * @param cbfun A function callback to the error callback, or `NULL`
+ * to remove the error callback.
+ * @return The previously bound error callback, or `NULL` if no 
+ * callback was set.
+ */
+CFWAPI cfw__errorfun cfw_set_error_callback(cfw__errorfun cbfun);
 
 /**
  * @brief Refresh the console.
