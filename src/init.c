@@ -72,5 +72,12 @@ CFWAPI cfw__bool cfw_is_feature_supported(int feature)
 CFWAPI void cfw_get_console_size(int *width, int *height)
 {
     CFW_REQUIRE_INIT();
-    _cfw_platform_get_console_size(width, height);
+
+    // Get size of console
+    int _width, _height;
+    _cfw_platform_get_console_size(&_width, &_height);
+
+    // Save the size data in the given pointers
+    if (width  != NULL) *width  = _width;
+    if (height != NULL) *height = _height;
 }
