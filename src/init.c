@@ -37,7 +37,7 @@ CFWAPI cfw__bool cfw_init(void)
     }
 
     // Set default values
-    __cfw.polygon_mode = CFW_LINES;
+    __cfw.polygon_mode = CFW_FILL;
 
     // CFW is now initialized
     __cfw.initialized = CFW_TRUE;
