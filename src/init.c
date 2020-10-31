@@ -36,6 +36,10 @@ CFWAPI cfw__bool cfw_init(void)
         return CFW_FALSE;
     }
 
+    // Set default values
+    __cfw.polygon_mode = CFW_LINES;
+
+    // CFW is now initialized
     __cfw.initialized = CFW_TRUE;
 
     return CFW_TRUE;

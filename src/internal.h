@@ -34,7 +34,9 @@ typedef struct __cfx_library __cfx_library;
 
 struct __cfx_library
 {
-    cfw__bool initialized;
+    cfw__bool   initialized;
+
+    int         polygon_mode;
 };
 
 extern __cfx_library __cfw;

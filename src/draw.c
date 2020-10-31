@@ -15,29 +15,9 @@
 
 #include "internal.h"
 
-// ------------------------------------------------------------------
-// |                         CFW PUBLIC API                         |
-// ------------------------------------------------------------------
+// Polygon draw calls
 
-CFWAPI void cfw_clear(void)
-{
-    CFW_REQUIRE_INIT();
-    _cfw_platform_clear();
-}
-
-CFWAPI void cfw_draw_char(int x, int y, char c)
-{
-    CFW_REQUIRE_INIT();
-    _cfw_platform_draw_char(x, y, c);
-}
-
-CFWAPI void cfw_draw_str(int x, int y, const char* str)
-{
-    CFW_REQUIRE_INIT();
-    _cfw_platform_draw_str(x, y, str);
-}
-
-CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
+void draw_line(int x1, int y1, int x2, int y2, char c)
 {
     CFW_REQUIRE_INIT();
 
@@ -96,16 +76,26 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
     }
 }
 
-CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2,
-                              int x3, int y3, char c)
+void draw_triangle_lines(int x1, int y1,
+                         int x2, int y2,
+                         int x3, int y3, char c)
 {
     cfw_draw_line(x1, y1, x2, y2, c);
     cfw_draw_line(x2, y2, x3, y3, c);
     cfw_draw_line(x3, y3, x1, y1, c);
 }
 
-CFWAPI void cfw_draw_quad(int x1, int y1, int x2, int y2,
-                          int x3, int y3, int x4, int y4, char c)
+void draw_triangle_fill(int x1, int y1,
+                        int x2, int y2,
+                        int x3, int y3, char c)
+{
+    // TODO: Implement this function
+}
+
+void draw_quad_lines(int x1, int y1,
+                     int x2, int y2,
+                     int x3, int y3,
+                     int x4, int y4, char c)
 {
     cfw_draw_line(x1, y1, x2, y2, c);
     cfw_draw_line(x2, y2, x3, y3, c);
@@ -113,7 +103,15 @@ CFWAPI void cfw_draw_quad(int x1, int y1, int x2, int y2,
     cfw_draw_line(x4, y4, x1, y1, c);
 }
 
-CFWAPI void cfw_draw_circle(int x, int y, int radius, char c)
+void draw_quad_fill(int x1, int y1,
+                    int x2, int y2,
+                    int x3, int y3,
+                    int x4, int y4, char c)
+{
+    // TODO: Implement this function
+}
+
+void draw_circle_lines(int x, int y, int radius, char c)
 {
     int tile_x = 0;
     int tile_y = radius;
@@ -133,5 +131,126 @@ CFWAPI void cfw_draw_circle(int x, int y, int radius, char c)
         _cfw_platform_draw_char(x + tile_x, y + tile_y, c);
         if (f < 0) f += 4 * tile_x++ + 6;
         else f += 4 * (tile_x++ - tile_y--) + 10;
+    }
+}
+
+void draw_circle_fill(int x, int y, int radius, char c)
+{
+    // TODO: Implement this function
+}
+
+// ------------------------------------------------------------------
+// |                         CFW PUBLIC API                         |
+// ------------------------------------------------------------------
+
+CFWAPI void cfw_clear(void)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_clear();
+}
+
+CFWAPI void cfw_polygon_mode(int mode)
+{
+    CFW_REQUIRE_INIT();
+
+    // Check if the mode is not one of the permitted modes
+    if (mode < CFW_POINTS || mode > CFW_FILL) return;
+
+    // Set the polygon mode
+    __cfw.polygon_mode = mode;
+}
+
+CFWAPI void cfw_draw_char(int x, int y, char c)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_draw_char(x, y, c);
+}
+
+CFWAPI void cfw_draw_str(int x, int y, const char* str)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_draw_str(x, y, str);
+}
+
+CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
+{
+    switch (__cfw.polygon_mode)
+    {
+    case CFW_POINTS:
+        _cfw_platform_draw_char(x1, y1, c);
+        _cfw_platform_draw_char(x2, y2, c);
+        break;
+    case CFW_LINES:
+    case CFW_FILL:
+        // For a line, FILL and LINES give the same result.
+        draw_line(x1, y1, x2, y2, c);
+        break;
+
+    default:
+        break;
+    }
+}
+
+CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2,
+                              int x3, int y3, char c)
+{
+    switch (__cfw.polygon_mode)
+    {
+    case CFW_POINTS:
+        _cfw_platform_draw_char(x1, y1, c);
+        _cfw_platform_draw_char(x2, y2, c);
+        _cfw_platform_draw_char(x3, y3, c);
+        break;
+    case CFW_LINES:
+        draw_triangle_lines(x1, y1, x2, y2, x3, y3, c);
+        break;
+    case CFW_FILL:
+        draw_triangle_fill(x1, y1, x2, y2, x3, y3, c);
+        break;
+
+    default:
+        break;
+    }
+}
+
+CFWAPI void cfw_draw_quad(int x1, int y1, int x2, int y2,
+                          int x3, int y3, int x4, int y4, char c)
+{
+    switch (__cfw.polygon_mode)
+    {
+    case CFW_POINTS:
+        _cfw_platform_draw_char(x1, y1, c);
+        _cfw_platform_draw_char(x2, y2, c);
+        _cfw_platform_draw_char(x3, y3, c);
+        _cfw_platform_draw_char(x4, y4, c);
+        break;
+    case CFW_LINES:
+        draw_quad_lines(x1, y1, x2, y2, x3, y3, x4, y4, c);
+        break;
+    case CFW_FILL:
+        draw_quad_fill(x1, y1, x2, y2, x3, y3, x4, y4, c);
+        break;
+
+    default:
+        break;
+    }
+}
+
+CFWAPI void cfw_draw_circle(int x, int y, int radius, char c)
+{
+    switch (__cfw.polygon_mode)
+    {
+    case CFW_POINTS:
+        _cfw_platform_draw_char(x, y, c);
+        break;
+    case CFW_LINES:
+        draw_circle_lines(x, y, radius, c);
+        break;
+    case CFW_FILL:
+        draw_circle_fill(x, y, radius, c);
+        break;
+
+    default:
+        break;
     }
 }

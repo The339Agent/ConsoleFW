@@ -90,6 +90,27 @@ extern "C" {
 #define CFW_COLORS  0x00010001
 
 /**
+ * @brief Points polygon mode.
+ * 
+ * Polygons have their points drawn.
+ */
+#define CFW_POINTS  0x00020001
+
+/**
+ * @brief Lines polygon mode.
+ * 
+ * Boundaries of polygons are drawn as lines.
+ */
+#define CFW_LINES   0x00020002
+
+/**
+ * @brief Fill polygon mode.
+ * 
+ * The entirety of the polygon is drawn, including the interior.
+ */
+#define CFW_FILL    0x00020003
+
+/**
  * @brief A boolean value.
  * 
  * This is just an int masked as a boolean used where CFW expects the
@@ -173,6 +194,18 @@ CFWAPI void cfw_get_console_size(int *width, int *height);
 CFWAPI void cfw_clear(void);
 
 /**
+ * @brief Set the way polygons are rasterized.
+ * 
+ * This function specifies the way polygons draw in draw calls are
+ * rasterized.
+ * 
+ * Can be `CFW_POINTS`, `CFW_LINES` or `CFW_FILL`.
+ * 
+ * @param mode Specifies how polygons are rasterized.
+ */
+CFWAPI void cfw_polygon_mode(int mode);
+
+/**
  * @brief Draw a character to the console.
  * 
  * This function draws the provided character to the console at the
@@ -197,7 +230,7 @@ CFWAPI void cfw_draw_char(int x, int y, char c);
 CFWAPI void cfw_draw_str(int x, int y, const char* str);
 
 /**
- * @brief Draw a line to the console.
+ * @brief Draw a line polygon to the console.
  * 
  * This function draws a line of the set character to the console.
  * 
@@ -213,7 +246,7 @@ CFWAPI void cfw_draw_str(int x, int y, const char* str);
 CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c);
 
 /**
- * @brief Draw a triangle to the console.
+ * @brief Draw a triangle polygon to the console.
  * 
  * This function draws a triange of the set character to the console.
  * 
@@ -231,7 +264,7 @@ CFWAPI void cfw_draw_triangle(int x1, int y1, int x2,
                               int y2, int x3, int y3, char c);
 
 /**
- * @brief Draw a quad to the console.
+ * @brief Draw a quad polygon to the console.
  * 
  * This function draws a quad of the set character to the console.
  * 
@@ -254,7 +287,7 @@ CFWAPI void cfw_draw_quad(int x1, int y1,
                           int x4, int y4, char c);
 
 /**
- * @brief Draw a circle to the console.
+ * @brief Draw a circle polygon to the console.
  * 
  * This function draws a circle of the set character to the console.
  * 
