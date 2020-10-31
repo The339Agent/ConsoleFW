@@ -253,6 +253,18 @@ CFWAPI void cfw_draw_quad(int x1, int y1,
                           int x3, int y3,
                           int x4, int y4, char c);
 
+/**
+ * @brief Draw a circle to the console.
+ * 
+ * This function draws a circle of the set character to the console.
+ * 
+ * @param x The X position of the center of the circle.
+ * @param y The Y position of the center of the circle.
+ * @param radius The radius of the circle.
+ * @param c The character to draw the circle with.
+ */
+CFWAPI void cfw_draw_circle(int x, int y, int radius, char c);
+
 #ifdef __cplusplus
 }
 #endif

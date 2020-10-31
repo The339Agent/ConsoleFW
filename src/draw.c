@@ -112,3 +112,26 @@ CFWAPI void cfw_draw_quad(int x1, int y1, int x2, int y2,
     cfw_draw_line(x3, y3, x4, y4, c);
     cfw_draw_line(x4, y4, x1, y1, c);
 }
+
+CFWAPI void cfw_draw_circle(int x, int y, int radius, char c)
+{
+    int tile_x = 0;
+    int tile_y = radius;
+    int f = 3 - 2 * radius;
+
+    if (!radius) return;
+    
+    while (tile_y >= tile_x)
+    {
+        _cfw_platform_draw_char(x - tile_x, y - tile_y, c);
+        _cfw_platform_draw_char(x - tile_y, y - tile_x, c);
+        _cfw_platform_draw_char(x + tile_y, y - tile_x, c);
+        _cfw_platform_draw_char(x + tile_x, y - tile_y, c);
+        _cfw_platform_draw_char(x - tile_x, y + tile_y, c);
+        _cfw_platform_draw_char(x - tile_y, y + tile_x, c);
+        _cfw_platform_draw_char(x + tile_y, y + tile_x, c);
+        _cfw_platform_draw_char(x + tile_x, y + tile_y, c);
+        if (f < 0) f += 4 * tile_x++ + 6;
+        else f += 4 * (tile_x++ - tile_y--) + 10;
+    }
+}
