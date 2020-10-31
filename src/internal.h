@@ -50,6 +50,7 @@ cfw__bool   _cfw_platform_is_feature_supported(int feature);
 void        _cfw_platform_get_console_size(int *width, int *height);
 
 void        _cfw_platform_clear(void);
+void        _cfw_platform_draw_char(int x, int y, char c);
 void        _cfw_platform_draw_str(int x, int y, const char* str);
 
 #endif /* __cfw_internal_h__ */

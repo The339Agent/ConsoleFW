@@ -21,6 +21,12 @@ CFWAPI void cfw_clear(void)
     _cfw_platform_clear();
 }
 
+CFWAPI void cfw_draw_char(int x, int y, char c)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_draw_char(x, y, c);
+}
+
 CFWAPI void cfw_draw_str(int x, int y, const char* str)
 {
     CFW_REQUIRE_INIT();

@@ -173,6 +173,18 @@ CFWAPI void cfw_get_console_size(int *width, int *height);
 CFWAPI void cfw_clear(void);
 
 /**
+ * @brief Draw a character to the console.
+ * 
+ * This function draws the provided character to the console at the
+ * given position.
+ * 
+ * @param x The X position to draw the char at.
+ * @param y The Y position to draw the char at.
+ * @param c The character to draw at the given position.
+ */
+CFWAPI void cfw_draw_char(int x, int y, char c);
+
+/**
  * @brief Draw a string to the console.
  * 
  * This function draws the provided string to the console at the
