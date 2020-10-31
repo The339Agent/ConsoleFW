@@ -15,6 +15,16 @@
 
 #include "internal.h"
 
+#define max(x,y) (((x) >= (y)) ? (x) : (y))
+#define min(x,y) (((x) <= (y)) ? (x) : (y))
+
+#define SWAP_VALUES(x, y)   \
+    {                       \
+        int temp = x;       \
+        x = y;              \
+        y = temp;           \
+    }
+
 // Polygon draw calls
 
 void draw_line(int x1, int y1, int x2, int y2, char c)
@@ -85,11 +95,72 @@ void draw_triangle_lines(int x1, int y1,
     cfw_draw_line(x3, y3, x1, y1, c);
 }
 
+void draw_bottom_triangle_fill(int x1, int y1,
+                               int x2, int y2,
+                               int x3, int y3, char c)
+{
+    float invslope1 = (x2 - x1) / (y2 - y1);
+    float invslope2 = (x3 - x1) / (y3 - y1);
+
+    float curx1 = x1;
+    float curx2 = x1;
+
+    for (int scanline_y = y1; scanline_y <= y2; scanline_y++)
+    {
+        cfw_draw_line((int)curx1, scanline_y, (int)curx2, scanline_y, c);
+        curx1 += invslope1;
+        curx2 += invslope2;
+    }
+}
+
+void draw_top_triangle_fill(int x1, int y1,
+                            int x2, int y2,
+                            int x3, int y3, char c)
+{
+    float invslope1 = (x3 - x1) / (y3 - y1);
+    float invslope2 = (x3 - x2) / (y3 - y2);
+
+    float curx1 = x3;
+    float curx2 = x3;
+
+    for (int scanline_y = y3; scanline_y > y1; scanline_y++)
+    {
+        cfw_draw_line((int)curx1, scanline_y, (int)curx2, scanline_y, c);
+        curx1 -= invslope1;
+        curx2 -= invslope2;
+    }
+}
+
 void draw_triangle_fill(int x1, int y1,
                         int x2, int y2,
                         int x3, int y3, char c)
 {
-    // TODO: Implement this function
+    // Sort the points by accending y coordinate
+    if (y1 > y2) { SWAP_VALUES(x1, x2); SWAP_VALUES(y1, y2); }
+    if (y1 > y3) { SWAP_VALUES(x1, x3); SWAP_VALUES(y1, y3); }
+    if (y2 > y3) { SWAP_VALUES(x2, x3); SWAP_VALUES(y2, y3); }
+
+    // Check if the triangle is either a top triangle or a bottom
+    // triangle
+    if (y2 == y3)
+    {
+        // The triangle is a bottom triangle
+        draw_bottom_triangle_fill(x1, y1, x2, y2, x3, y3, c);
+    }
+    else if (y1 == y2)
+    {
+        // The triangle is a top triangle
+        draw_top_triangle_fill(x1, y1, x2, y2, x3, y3, c);
+    }
+    else
+    {
+        // The triangle is neither, so split it into both types
+        int x4 = (int)(x1 + ((float)(y2 - y1) / (float)(y3 - y1)) * (x3 - x1));
+        int y4 = y2;
+        draw_bottom_triangle_fill(x1, y1, x2, y2, x4, y4, c);
+        draw_top_triangle_fill(x2, y2, x4, y4, x3, y3, c);
+    }
+    
 }
 
 void draw_quad_lines(int x1, int y1,
