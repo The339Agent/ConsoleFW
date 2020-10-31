@@ -72,6 +72,25 @@ extern "C" {
  */
 #define CFW_TRUE 1
 
+/* Supported colors */
+
+#define CFW_BLACK           0
+#define CFW_BLUE            1
+#define CFW_GREEN           2
+#define CFW_CYAN            3
+#define CFW_RED             4
+#define CFW_MAGENTA         5
+#define CFW_YELLOW          6
+#define CFW_WHITE           7
+#define CFW_BOLD_BLACK      8
+#define CFW_BOLD_BLUE       9
+#define CFW_BOLD_GREEN      10
+#define CFW_BOLD_CYAN       11
+#define CFW_BOLD_RED        12
+#define CFW_BOLD_MAGENTA    13
+#define CFW_BOLD_YELLOW     14
+#define CFW_BOLD_WHITE      15
+
 /**
  * @brief CFW not initialized error.
  * 
@@ -220,6 +239,19 @@ CFWAPI void cfw_refresh(void);
 CFWAPI cfw__bool cfw_is_feature_supported(int feature);
 
 /**
+ * @brief Enable a feature.
+ * 
+ * This function enables a feature.
+ * 
+ * To check if the feature is enabled, query it's support with
+ * `cfw_is_feature_supported()`. A feature must be enabled before it
+ * can be used.
+ * 
+ * @param feature The feature to enable.
+ */
+CFWAPI void cfw_enable(int feature);
+
+/**
  * @brief Get the current size of the console
  * 
  * This function gets the current max size of the console and stores
@@ -248,6 +280,56 @@ CFWAPI void cfw_clear(void);
  * @param mode Specifies how polygons are rasterized.
  */
 CFWAPI void cfw_polygon_mode(int mode);
+
+/**
+ * @brief Set draw colors to default.
+ * 
+ * This function sets the draw foreground and background color to their 
+ * defaut values.
+ * 
+ * To use this function, `CFW_COLORS` has to be enabled. Enable it
+ * with `cfw_enable()` passing in the color feature. To check if your
+ */
+CFWAPI void cfw_set_default_color(void);
+
+/**
+ * @brief Set the draw colors.
+ * 
+ * This function sets both the foreground color and the background
+ * color of the draw.
+ * 
+ * To use this function, `CFW_COLORS` has to be enabled. Enable it
+ * with `cfw_enable()` passing in the color feature. To check if your
+ * 
+ * @param foreground_color The color to set the foreground to.
+ * @param background_color The color to set the background to.
+ */
+CFWAPI void cfw_set_color(int foreground_color, int background_color);
+
+/**
+ * @brief Set the draw foreground color.
+ * 
+ * This function sets the foreground color of the draw.
+ * 
+ * To use this function, `CFW_COLORS` has to be enabled. Enable it
+ * with `cfw_enable()` passing in the color feature. To check if your
+ * 
+ * @param color The color to set the foreground to.
+ */
+CFWAPI void cfw_set_foreground_color(int color);
+
+/**
+ * @brief Set the draw background color.
+ * 
+ * This function sets the background color of the draw.
+ * 
+ * To use this function, `CFW_COLORS` has to be enabled. Enable it
+ * with `cfw_enable()` passing in the color feature. To check if your
+ * system supports colors, call `cfw_is_feature_supported()`.
+ * 
+ * @param color The color to set the background to.
+ */
+CFWAPI void cfw_set_background_color(int color);
 
 /**
  * @brief Draw a character to the console.

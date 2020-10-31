@@ -47,6 +47,9 @@ struct __cfx_library
     cfw__bool       initialized;
 
     int             polygon_mode;
+
+    int             foreground_color;
+    int             background_color;
 };
 
 extern __cfx_library __cfw;
@@ -70,9 +73,12 @@ cfw__bool   _cfw_platform_init(void);
 void        _cfw_platform_terminate(void);
 void        _cfw_platform_refresh(void);
 cfw__bool   _cfw_platform_is_feature_supported(int feature);
+void        _cfw_platform_enable(int feature);
 void        _cfw_platform_get_console_size(int *width, int *height);
 
 void        _cfw_platform_clear(void);
+void        _cfw_platform_set_color(int fg_color, int bg_color);
+void        _cfw_platform_unset_color(int fg_color, int bg_color);
 void        _cfw_platform_draw_char(int x, int y, char c);
 void        _cfw_platform_draw_str(int x, int y, const char* str);
 

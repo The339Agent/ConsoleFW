@@ -14,6 +14,75 @@
 #include <ncurses.h>
 
 #include "internal.h"
+#include "ncurses_internal.h"
+
+short get_ncurses_color_id(int color)
+{
+    switch (color)
+    {
+    case 0:
+        return COLOR_BLACK;
+    case 1:
+        return COLOR_BLUE;
+    case 2:
+        return COLOR_GREEN;
+    case 3:
+        return COLOR_CYAN;
+    case 4:
+        return COLOR_RED;
+    case 5:
+        return COLOR_MAGENTA;
+    case 6:
+        return COLOR_YELLOW;
+    case 7:
+        return COLOR_WHITE;
+
+    default:
+        return COLOR_WHITE;
+    }
+}
+
+void create_color_pairs()
+{
+    // Generate all possible color configurations
+    for (int bg_color = CFW_BLACK; bg_color <= CFW_WHITE; bg_color++)
+    {
+        for (int fg_color = CFW_BLACK; fg_color <= CFW_WHITE; fg_color++)
+        {
+            int id = _cfw_platform_ncurses_colornum(fg_color, bg_color);
+            init_pair(id, get_ncurses_color_id(fg_color),
+                          get_ncurses_color_id(bg_color));
+        }
+    }
+}
+
+// ------------------------------------------------------------------
+// |                   CFW internal platform API                    |
+// ------------------------------------------------------------------
+
+int _cfw_platform_ncurses_colornum(int foreground, int background)
+{
+    // 10001111 = Bold white, black background = 143
+    // ||||||||
+    // |||||--- Foreground color
+    // ||||---- Bold (not set here)
+    // |------- Background color
+    // -------- Bonus bit to assure that 0 is never returned
+
+    int B, bbb, ffff;
+
+    B = 1 << 7;
+    bbb = (7 & background) << 4;
+    ffff = 7 & foreground;
+
+    return (B | bbb | ffff);
+}
+
+cfw__bool _cfw_platform_ncurses_is_bold(int color)
+{
+    int i = 1 << 3;
+    return (i & color);
+}
 
 // ------------------------------------------------------------------
 // |                        CFW platform API                        |
@@ -53,7 +122,22 @@ cfw__bool _cfw_platform_is_feature_supported(int feature)
         break;
     
     default:
+        _cfw_input_error(CFW_INVALID_VALUE, "0x%x is not a valid feature.", feature);
         return CFW_FALSE;
+    }
+}
+
+void _cfw_platform_enable(int feature)
+{
+    switch (feature)
+    {
+    case CFW_COLORS:
+        start_color();
+        create_color_pairs();
+        break;
+
+    default:
+        _cfw_input_error(CFW_INVALID_VALUE, "0x%x is not a valid feature.", feature);
     }
 }
 

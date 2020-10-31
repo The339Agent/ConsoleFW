@@ -78,6 +78,8 @@ CFWAPI cfw__bool cfw_init(void)
 
     // Set default values
     __cfw.polygon_mode = CFW_FILL;
+    __cfw.foreground_color = -1;
+    __cfw.background_color = -1;
 
     // CFW is now initialized
     __cfw.initialized = CFW_TRUE;
@@ -117,6 +119,12 @@ CFWAPI cfw__bool cfw_is_feature_supported(int feature)
 {
     CFW_REQUIRE_INIT_OR_RETURN(CFW_FALSE);
     return _cfw_platform_is_feature_supported(feature);
+}
+
+CFWAPI void cfw_enable(int feature)
+{
+    CFW_REQUIRE_INIT();
+    _cfw_platform_enable(feature);
 }
 
 CFWAPI void cfw_get_console_size(int *width, int *height)

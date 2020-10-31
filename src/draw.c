@@ -264,6 +264,78 @@ CFWAPI void cfw_polygon_mode(int mode)
     __cfw.polygon_mode = mode;
 }
 
+CFWAPI void cfw_set_default_color(void)
+{
+    CFW_REQUIRE_INIT();
+
+    if (__cfw.foreground_color != -1 && __cfw.background_color != -1)
+        _cfw_platform_unset_color(__cfw.foreground_color, __cfw.background_color);
+
+    __cfw.foreground_color = CFW_WHITE;
+    __cfw.background_color = CFW_BLACK;
+}
+
+CFWAPI void cfw_set_color(int foreground_color, int background_color)
+{
+    CFW_REQUIRE_INIT();
+
+    if (foreground_color < CFW_BLACK || foreground_color > CFW_BOLD_WHITE)
+    {
+        _cfw_input_error(CFW_INVALID_VALUE, "%d is not a valid foreground color.",
+                         foreground_color);
+        return;
+    }
+    else if (background_color < CFW_BLACK || background_color > CFW_WHITE)
+    {
+        _cfw_input_error(CFW_INVALID_VALUE, "%d is not a valid foreground color.",
+                         background_color);
+        return;
+    }
+
+    _cfw_platform_unset_color(__cfw.foreground_color, __cfw.background_color);
+
+    __cfw.foreground_color = foreground_color;
+    __cfw.background_color = background_color;
+
+    _cfw_platform_set_color(__cfw.foreground_color, __cfw.background_color);
+}
+
+CFWAPI void cfw_set_foreground_color(int color)
+{
+    CFW_REQUIRE_INIT();
+
+    // Check if the color is valid
+    if (color < CFW_BLACK || color > CFW_BOLD_WHITE)
+    {
+        _cfw_input_error(CFW_INVALID_VALUE, "%d is not a valid color.", color);
+        return;
+    }
+
+    _cfw_platform_unset_color(__cfw.foreground_color, __cfw.background_color);
+    
+    __cfw.foreground_color = color;
+
+    _cfw_platform_set_color(__cfw.foreground_color, __cfw.background_color);
+}
+
+CFWAPI void cfw_set_background_color(int color)
+{
+    CFW_REQUIRE_INIT();
+
+    // Check if color is valid
+    if (color < CFW_BLACK || color > CFW_WHITE)
+    {
+        _cfw_input_error(CFW_INVALID_VALUE, "%d is not a valid color.", color);
+        return;
+    }
+
+    _cfw_platform_unset_color(__cfw.foreground_color, __cfw.background_color);
+
+    __cfw.background_color = color;
+
+    _cfw_platform_set_color(__cfw.foreground_color, __cfw.background_color);
+}
+
 CFWAPI void cfw_draw_char(int x, int y, char c)
 {
     CFW_REQUIRE_INIT();
