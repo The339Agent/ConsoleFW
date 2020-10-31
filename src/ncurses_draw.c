@@ -26,7 +26,7 @@ void _cfw_platform_clear(void)
 
 void _cfw_platform_draw_char(int x, int y, char c)
 {
-    mvprintw(y, x, &c);
+    mvaddch(y, x, c);
 }
 
 void _cfw_platform_draw_str(int x, int y, const char* str)
