@@ -123,7 +123,7 @@ void draw_top_triangle_fill(int x1, int y1,
     float curx1 = x3;
     float curx2 = x3;
 
-    for (int scanline_y = y3; scanline_y > y1; scanline_y++)
+    for (int scanline_y = y3; scanline_y > y1; scanline_y--)
     {
         cfw_draw_line((int)curx1, scanline_y, (int)curx2, scanline_y, c);
         curx1 -= invslope1;
@@ -179,7 +179,8 @@ void draw_quad_fill(int x1, int y1,
                     int x3, int y3,
                     int x4, int y4, char c)
 {
-    // TODO: Implement this function
+    draw_triangle_fill(x1, y1, x2, y2, x3, y3, c);
+    draw_triangle_fill(x1, y1, x3, y3, x4, y4, c);
 }
 
 void draw_circle_lines(int x, int y, int radius, char c)
