@@ -225,9 +225,32 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c);
  * @param y2 The Y position of the second point.
  * @param x3 The X position of the third point.
  * @param y3 The Y position of the third point.
- * @param c The character to draw the line with.
+ * @param c The character to draw the triangle with.
  */
 CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2, int x3, int y3, char c);
+
+/**
+ * @brief Draw a quad to the console.
+ * 
+ * This function draws a quad of the set character to the console.
+ * 
+ * The quad is drawn within the area defined by the four given
+ * points.
+ * 
+ * @param x1 The X position of the first point.
+ * @param y1 The Y position of the first point.
+ * @param x2 The X position of the second point.
+ * @param y2 The Y position of the second point.
+ * @param x3 The X position of the third point.
+ * @param y3 The Y position of the third point.
+ * @param x4 The X position of the fourth point.
+ * @param y4 The Y position of the fourth point.
+ * @param c The character to draw the quad with.
+ */
+CFWAPI void cfw_draw_quad(int x1, int y1,
+                          int x2, int y2,
+                          int x3, int y3,
+                          int x4, int y4, char c);
 
 #ifdef __cplusplus
 }
