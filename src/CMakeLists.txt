@@ -23,8 +23,8 @@ target_include_directories(cfw PRIVATE
 
 # Set shared lib definitions
 if (BUILD_SHARED_LIBS)
-    target_compile_definitions(cfw PUBLIC   CFW_DLL)
-    target_compile_definitions(cfw PRIVATE  _CFW_BUILD_DLL)
+    target_compile_definitions(cfw INTERFACE CFW_DLL)
+    target_compile_definitions(cfw PRIVATE   _CFW_BUILD_DLL)
 endif()
 
 # Add libraries
