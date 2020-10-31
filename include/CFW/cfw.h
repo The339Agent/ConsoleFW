@@ -196,6 +196,22 @@ CFWAPI void cfw_draw_char(int x, int y, char c);
  */
 CFWAPI void cfw_draw_str(int x, int y, const char* str);
 
+/**
+ * @brief Draw a line to the console.
+ * 
+ * This function draws a line of the set character to the console.
+ * 
+ * The line is drawn from the given start position to the given end
+ * position.
+ * 
+ * @param x1 The X position of the start of the line.
+ * @param y1 The Y position of the start of the line.
+ * @param x2 The X position of the end of the line.
+ * @param y2 The Y position of the end of the line.
+ * @param c The character to fill the line with.
+ */
+CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c);
+
 #ifdef __cplusplus
 }
 #endif
