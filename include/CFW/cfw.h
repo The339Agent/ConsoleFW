@@ -339,6 +339,42 @@ CFWAPI void cfw_set_foreground_color(int color);
 CFWAPI void cfw_set_background_color(int color);
 
 /**
+ * @brief Begin a drawing region.
+ * 
+ * This function begins drawing inside a region. If a region is
+ * already begun, the new region will be constrained to the previous
+ * region.
+ * 
+ * @param x The X position of where to start the region.
+ * @param y The Y position of where to start the region.
+ * @param width The width of the region.
+ * @param height The height of the region.
+ */
+CFWAPI void cfw_begin_region(int x, int y, int width, int height);
+
+/**
+ * @brief End a drawing region.
+ * 
+ * This function ends the newest region. If there isn't any region
+ * currently set, this function does nothing.
+ */
+CFWAPI void cfw_end_region(void);
+
+/**
+ * @brief Get the size of the current region.
+ * 
+ * This function gets the bounds of the current region and stores
+ * them in the provided integers. If no region is currently set, the
+ * bounds will be the bounds of the console.
+ * 
+ * @param width A pointer to the int to store the width of the region
+ * in.
+ * @param height A pointer to the int to store the height of the
+ * region in.
+ */
+CFWAPI void cfw_get_region_bounds(int *width, int *height);
+
+/**
  * @brief Draw a character to the console.
  * 
  * This function draws the provided character to the console at the

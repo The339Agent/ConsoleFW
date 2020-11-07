@@ -12,18 +12,50 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "internal.h"
 
-#define max(x,y) (((x) >= (y)) ? (x) : (y))
-#define min(x,y) (((x) <= (y)) ? (x) : (y))
+int translate_xy_to_bounds(int *x, int *y, int length)
+{
+    int max_x, max_y;
+    int offset_x = 0, offset_y = 0;
+    max_x = __cfw.width;
+    max_y = __cfw.height;
 
-#define SWAP_VALUES(x, y)   \
-    {                       \
-        int temp = x;       \
-        x = y;              \
-        y = temp;           \
+    // If a region is currently set...
+    if (__cfw.region_head != NULL)
+    {
+        // ...translate the position in the bounds
+
+        // Get the bound data of the currently active bounds
+        {
+            __cfw_region **current = &__cfw.region_head;
+
+            while (*current != NULL)
+            {
+                offset_x += (*current)->x;
+                offset_y += (*current)->y;
+                max_x = min(max_x, (*current)->width);
+                max_y = min(max_y, (*current)->height);
+
+                current = &(*current)->next;
+            }
+        }
+
+        // Shift XY
+        *x += offset_x;
+        *y += offset_y;
+
+        // Check if the Y overflows the bound
+        if (*y > max_y + offset_y)
+            // Return a ridiculous overlow value
+            return 0xFFFFFF;
     }
+
+    // Return the count of characters overflow the bound
+    return max(0, *x + length - (max_x + offset_x));
+}
 
 // Polygon draw calls
 
@@ -136,9 +168,9 @@ void draw_triangle_fill(int x1, int y1,
                         int x3, int y3, char c)
 {
     // Sort the points by accending y coordinate
-    if (y1 > y2) { SWAP_VALUES(x1, x2); SWAP_VALUES(y1, y2); }
-    if (y1 > y3) { SWAP_VALUES(x1, x3); SWAP_VALUES(y1, y3); }
-    if (y2 > y3) { SWAP_VALUES(x2, x3); SWAP_VALUES(y2, y3); }
+    if (y1 > y2) { CFW_SWAP_VALUES(x1, x2); CFW_SWAP_VALUES(y1, y2); }
+    if (y1 > y3) { CFW_SWAP_VALUES(x1, x3); CFW_SWAP_VALUES(y1, y3); }
+    if (y2 > y3) { CFW_SWAP_VALUES(x2, x3); CFW_SWAP_VALUES(y2, y3); }
 
     // Check if the triangle is either a top triangle or a bottom
     // triangle
@@ -346,16 +378,96 @@ CFWAPI void cfw_set_background_color(int color)
     _cfw_platform_set_color(__cfw.foreground_color, __cfw.background_color);
 }
 
+CFWAPI void cfw_begin_region(int x, int y, int width, int height)
+{
+    CFW_REQUIRE_INIT();
+
+    // Allocate memory for region
+    __cfw_region *region = malloc(sizeof(__cfw_region));
+
+    // Set region bounds
+    region->x = x;
+    region->y = y;
+    region->width = width;
+    region->height = height;
+
+    // Save region
+    region->next = __cfw.region_head;
+    __cfw.region_head = region;
+}
+
+CFWAPI void cfw_end_region(void)
+{
+    CFW_REQUIRE_INIT();
+
+    // If no region is currently set...
+    if (__cfw.region_head == NULL) return; // ... do nothing
+
+    // Pop region list
+    __cfw_region *region = __cfw.region_head;
+    __cfw.region_head = region->next;
+
+    // Delete region
+    free(region);
+}
+
+CFWAPI void cfw_get_region_bounds(int *width, int *height)
+{
+    CFW_REQUIRE_INIT();
+
+    // If no region is currently set...
+    if (__cfw.region_head == NULL)
+    {
+        // ...return the size of the console
+        cfw_get_console_size(width, height);
+    }
+    else
+    {
+        // Get the size of the topmost region
+        __cfw_region *region = __cfw.region_head;
+        if (width != NULL)  *width  = region->width;
+        if (height != NULL) *height = region->height;
+    }
+}
+
 CFWAPI void cfw_draw_char(int x, int y, char c)
 {
     CFW_REQUIRE_INIT();
+
+    // Translate the XY to the current bounds
+    int overflow = translate_xy_to_bounds(&x, &y, 1);
+    if (overflow > 0) return;
+
+    // Draw the character
     _cfw_platform_draw_char(x, y, c);
 }
 
 CFWAPI void cfw_draw_str(int x, int y, const char* str)
 {
     CFW_REQUIRE_INIT();
-    _cfw_platform_draw_str(x, y, str);
+
+    // Translate the XY to the current bounds
+    int _length = strlen(str);
+    int overflow = translate_xy_to_bounds(&x, &y, _length);
+    if (overflow >= _length)
+        return; // The entire string is out of bounds, discard it.
+    else if (overflow > 0)
+    {
+        // Some, but not all of the characters fit. Only draw the
+        // characters that fit.
+
+        // A maximum of 1024 chars are allowed to be included after
+        // an overflow. If more than 1024 chars are overflowing the
+        // current region, it will be discarded. However, if you have
+        // more than 1024 chars overflowing, you have bigger
+        // problems.
+        char substr[1024];
+        substr(substr, str, 0, _length - overflow);
+        _cfw_platform_draw_str(x, y, substr);
+    }
+    else
+        // Draw the string in its entirety
+        _cfw_platform_draw_str(x, y, str);
 }
 
 CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)

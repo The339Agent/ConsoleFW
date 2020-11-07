@@ -86,6 +86,9 @@ CFWAPI cfw__bool cfw_init(void)
         return CFW_FALSE;
     }
 
+    // Cache console size
+    cfw_get_console_size(&__cfw.width, &__cfw.height);
+
     // Set default values
     __cfw.polygon_mode = CFW_FILL;
     __cfw.foreground_color = -1;
@@ -149,4 +152,9 @@ CFWAPI void cfw_get_console_size(int *width, int *height)
     // Save the size data in the given pointers
     if (width  != NULL) *width  = _width;
     if (height != NULL) *height = _height;
+
+    // ...and just take the opportunity to update the cached size
+    // variables... shh...
+    __cfw.width  = _width;
+    __cfw.height = _height;
 }

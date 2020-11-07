@@ -26,6 +26,13 @@
         y = temp;               \
     }
 
+#define CFW_SWAP_VALUES(x, y)   \
+    {                           \
+        int temp = x;           \
+        x = y;                  \
+        y = temp;               \
+    }
+
 #define CFW_REQUIRE_INIT()                              \
     if (!__cfw.initialized)                             \
     {                                                   \
@@ -47,11 +54,33 @@
         return;                                         \
     }
 
-typedef struct __cfx_library __cfx_library;
+#define substr(dest, res, start, end)                   \
+    memcpy(dest, &res[start], end); dest[end] = '\0';
+
+#define max(x,y) (((x) >= (y)) ? (x) : (y))
+#define min(x,y) (((x) <= (y)) ? (x) : (y))
+
+typedef struct __cfx_library    __cfx_library;
+typedef struct __cfw_region     __cfw_region;
+
+struct __cfw_region
+{
+    int x;
+    int y;
+    int width;
+    int height;
+
+    // Pointer to next region in list
+    __cfw_region *next;
+};
+
 
 struct __cfx_library
 {
     cfw__bool       initialized;
+
+    int             width;
+    int             height;
 
     int             enabled_features;
 
@@ -59,6 +88,8 @@ struct __cfx_library
 
     int             foreground_color;
     int             background_color;
+
+    __cfw_region    *region_head;
 };
 
 extern __cfx_library __cfw;
