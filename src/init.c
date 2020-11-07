@@ -47,8 +47,18 @@ void _cfw_input_error(int errorcode, const char *fmt, ...)
         // Automatically generate message from errorcode
         switch (errorcode)
         {
+        case CFW_NOT_INITIALIZED:
+            strcpy(message, "CFW is not initialized");
+            break;
+        case CFW_INVALID_VALUE:
+            strcpy(message, "Given value is invalid");
+            break;
+        case CFW_NOT_ENABLED:
+            strcpy(message, "CFW feature is not enabled");
+            break;
         default:
             strcpy(message, "Unknown error");
+            break;
         }
     }
     
@@ -125,6 +135,7 @@ CFWAPI void cfw_enable(int feature)
 {
     CFW_REQUIRE_INIT();
     _cfw_platform_enable(feature);
+    __cfw.enabled_features |= feature;
 }
 
 CFWAPI void cfw_get_console_size(int *width, int *height)

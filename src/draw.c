@@ -267,18 +267,26 @@ CFWAPI void cfw_polygon_mode(int mode)
 CFWAPI void cfw_set_default_color(void)
 {
     CFW_REQUIRE_INIT();
+    CFW_REQUIRE_FEATURE_ENABLED(CFW_COLORS);
 
+    // Check if the color is valid
     if (__cfw.foreground_color != -1 && __cfw.background_color != -1)
         _cfw_platform_unset_color(__cfw.foreground_color, __cfw.background_color);
 
+    // Set default colors
     __cfw.foreground_color = CFW_WHITE;
     __cfw.background_color = CFW_BLACK;
+
+    // There is no need to set the new colors, as they are already
+    // enabled when the previously bound color is unbound.
 }
 
 CFWAPI void cfw_set_color(int foreground_color, int background_color)
 {
     CFW_REQUIRE_INIT();
+    CFW_REQUIRE_FEATURE_ENABLED(CFW_COLORS);
 
+    // Check if the color is valid
     if (foreground_color < CFW_BLACK || foreground_color > CFW_BOLD_WHITE)
     {
         _cfw_input_error(CFW_INVALID_VALUE, "%d is not a valid foreground color.",
@@ -303,6 +311,7 @@ CFWAPI void cfw_set_color(int foreground_color, int background_color)
 CFWAPI void cfw_set_foreground_color(int color)
 {
     CFW_REQUIRE_INIT();
+    CFW_REQUIRE_FEATURE_ENABLED(CFW_COLORS);
 
     // Check if the color is valid
     if (color < CFW_BLACK || color > CFW_BOLD_WHITE)
@@ -321,6 +330,7 @@ CFWAPI void cfw_set_foreground_color(int color)
 CFWAPI void cfw_set_background_color(int color)
 {
     CFW_REQUIRE_INIT();
+    CFW_REQUIRE_FEATURE_ENABLED(CFW_COLORS);
 
     // Check if color is valid
     if (color < CFW_BLACK || color > CFW_WHITE)

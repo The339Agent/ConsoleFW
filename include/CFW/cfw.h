@@ -106,6 +106,13 @@ extern "C" {
 #define CFW_INVALID_VALUE   0x00010002
 
 /**
+ * @brief CFW feature not enabled.
+ * 
+ * This error is for when a unenabled feature is used.
+ */
+#define CFW_NOT_ENABLED     0x00010003
+
+/**
  * @brief Color support.
  * 
  * The value to pass to `cfw_is_feature_supported()` to check the

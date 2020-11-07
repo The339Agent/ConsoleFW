@@ -40,11 +40,20 @@
         return x;                                       \
     }
 
+#define CFW_REQUIRE_FEATURE_ENABLED(x)                  \
+    if (!(__cfw.enabled_features & x))                  \
+    {                                                   \
+        _cfw_input_error(CFW_NOT_ENABLED, NULL);        \
+        return;                                         \
+    }
+
 typedef struct __cfx_library __cfx_library;
 
 struct __cfx_library
 {
     cfw__bool       initialized;
+
+    int             enabled_features;
 
     int             polygon_mode;
 
