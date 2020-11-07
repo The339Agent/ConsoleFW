@@ -86,9 +86,6 @@ CFWAPI cfw__bool cfw_init(void)
         return CFW_FALSE;
     }
 
-    // Cache console size
-    cfw_get_console_size(&__cfw.width, &__cfw.height);
-
     // Set default values
     __cfw.polygon_mode = CFW_FILL;
     __cfw.foreground_color = -1;
@@ -96,6 +93,9 @@ CFWAPI cfw__bool cfw_init(void)
 
     // CFW is now initialized
     __cfw.initialized = CFW_TRUE;
+
+    // Cache console size
+    cfw_get_console_size(&__cfw.width, &__cfw.height);
 
     return CFW_TRUE;
 }
