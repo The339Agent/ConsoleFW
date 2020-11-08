@@ -91,6 +91,56 @@ extern "C" {
 #define CFW_BOLD_YELLOW     14
 #define CFW_BOLD_WHITE      15
 
+/* Function keys */
+#define CFW_KEY_UP          0400
+#define CFW_KEY_DOWN        0401
+#define CFW_KEY_LEFT        0402
+#define CFW_KEY_RIGHT       0403
+#define CFW_KEY_HOME        0404
+#define CFW_KEY_BACKSPACE   0405
+#define CFW_KEY_DELETE      0406
+#define CFW_KEY_INSERT      0407
+#define CFW_KEY_ENTER       0410
+
+/* F(n) keys */
+
+#define CFW_KEY_F0          0410 // From curses.h
+#define CFW_KEY_F(n)        (CFW_KEY_F0 + (n))
+#define CFW_KEY_F1          CFW_KEY_F(1)
+#define CFW_KEY_F2          CFW_KEY_F(2)
+#define CFW_KEY_F3          CFW_KEY_F(3)
+#define CFW_KEY_F4          CFW_KEY_F(4)
+#define CFW_KEY_F5          CFW_KEY_F(5)
+#define CFW_KEY_F6          CFW_KEY_F(6)
+#define CFW_KEY_F7          CFW_KEY_F(7)
+#define CFW_KEY_F8          CFW_KEY_F(8)
+#define CFW_KEY_F9          CFW_KEY_F(9)
+#define CFW_KEY_F10         CFW_KEY_F(10)
+#define CFW_KEY_F11         CFW_KEY_F(11)
+#define CFW_KEY_F12         CFW_KEY_F(12)
+#define CFW_KEY_F13         CFW_KEY_F(13)
+#define CFW_KEY_F14         CFW_KEY_F(14)
+#define CFW_KEY_F15         CFW_KEY_F(15)
+#define CFW_KEY_F16         CFW_KEY_F(16)
+#define CFW_KEY_F17         CFW_KEY_F(17)
+#define CFW_KEY_F18         CFW_KEY_F(18)
+#define CFW_KEY_F19         CFW_KEY_F(19)
+#define CFW_KEY_F20         CFW_KEY_F(20)
+#define CFW_KEY_F21         CFW_KEY_F(21)
+#define CFW_KEY_F22         CFW_KEY_F(22)
+#define CFW_KEY_F23         CFW_KEY_F(23)
+#define CFW_KEY_F24         CFW_KEY_F(24)
+#define CFW_KEY_F25         CFW_KEY_F(25)
+
+/**
+ * 
+ * @brief Charcode for no key.
+ * 
+ * This value is returned when a char input function doesn't have a
+ * char to return.
+ */
+#define CFW_NO_KEY          -1
+
 /**
  * @brief CFW not initialized error.
  * 
@@ -169,6 +219,15 @@ typedef int cfw__bool;
 typedef void (* cfw__errorfun)(int,const char *);
 
 /**
+ * @brief Function pointer for a char callback.
+ * 
+ * This is the function pointer for an char calback.
+ * 
+ * @param codepoint The char that was pressed.
+ */
+typedef void (* cfw__charfun)(int);
+
+/**
  * @brief Initialize CFW.
  * 
  * This function initializes CFW. Before CFW can be used it must be
@@ -197,6 +256,9 @@ CFWAPI cfw__bool cfw_init(void);
  * 
  * If the application isn't initialized, this function will return
  * immediately without doing anything.
+ * 
+ * After being called, no callbacks will be called, except for the
+ * error callback.
  */
 CFWAPI void cfw_terminate(void);
 
@@ -268,6 +330,56 @@ CFWAPI void cfw_enable(int feature);
  * @param height Pointer to the int to store the console height in.
  */
 CFWAPI void cfw_get_console_size(int *width, int *height);
+
+/**
+ * @brief Sets the char callback.
+ * 
+ * This function sets the char callback of CFW.
+ * 
+ * The char callback is dependent on the init state of CFW, and can
+ * only be used when CFW is initialized. The callback gets cleared
+ * when CFW is terminated.
+ * 
+ * Whenever the console receives char input, this callback is called
+ * with the char that triggered the callback.
+ * 
+ * If this function is called before CFW is initialized, it returns
+ * `NULL`.
+ * 
+ * @param cbfun A function pointer to the function to set as the char
+ * callback, or `NULL` to remove the char callback.
+ * @return The previously bound char callback, or `NULL` if no char
+ * callback was set.
+ */
+CFWAPI cfw__charfun cfw_set_char_callback(cfw__charfun cbfun);
+
+/**
+ * @brief Wait for user input and return it.
+ * 
+ * This function halts the program and awaits user input on the
+ * keyboard. When a char is pressed, it is returned, and execution
+ * continues.
+ * 
+ * If CFW isn't initialized, `CFW_NO_KEY` is returned.
+ * 
+ * @return The char the user pressed, or `CFW_NO_KEY` if CFW isn't
+ * initialized.
+ */
+CFWAPI int cfw_get_char(void);
+
+/**
+ * @brief Get any currently pressed char.
+ * 
+ * This function returns the char the user is currently pressing. If
+ * the user isn't pressing any char, `CFW_NO_KEY` is returned.
+ * 
+ * If CFW isn't initialized, `CFW_NO_KEY` is returned.
+ * 
+ * @return The char that is currently pressed, or `CFW_NO_KEY` if no
+ * key is pressed. If CFW isn't initialized, `CFW_NO_KEY` is also
+ * returned.
+ */
+CFWAPI int cfw_get_pressed_char(void);
 
 /**
  * @brief Clear the console content.

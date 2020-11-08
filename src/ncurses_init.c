@@ -90,9 +90,10 @@ cfw__bool _cfw_platform_ncurses_is_bold(int color)
 
 cfw__bool _cfw_platform_init(void)
 {
-    initscr();          // Initialize the window
-    noecho();           // Don't echo any keypress
-    curs_set(FALSE);    // Don't display a cursor
+    initscr();              // Initialize the window
+    noecho();               // Don't echo any keypress
+    curs_set(FALSE);        // Don't display a cursor
+    keypad(stdscr, TRUE);   // Get a single value for special keys
 
     // Add the terminate call to an atexit to make sure that ncurses
     // is terminated at the absolute end of the application. If

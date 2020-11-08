@@ -89,6 +89,11 @@ struct __cfx_library
     int             foreground_color;
     int             background_color;
 
+    struct
+    {
+        cfw__charfun    char_callback;
+    } callbacks;
+
     __cfw_region    *region_head;
 };
 
@@ -105,6 +110,8 @@ void _cfw_input_error(int errorcode, const char *fmt, ...)
 void _cfw_input_error(int errorcode, const char *fmt, ...);
 #endif
 
+void _cfw_poll_input(void);
+
 // ------------------------------------------------------------------
 // |                        CFW platform API                        |
 // ------------------------------------------------------------------
@@ -115,6 +122,9 @@ void        _cfw_platform_refresh(void);
 cfw__bool   _cfw_platform_is_feature_supported(int feature);
 void        _cfw_platform_enable(int feature);
 void        _cfw_platform_get_console_size(int *width, int *height);
+
+int         _cfw_platform_get_char(void);
+int         _cfw_platform_get_char_no_halt(void);
 
 void        _cfw_platform_clear(void);
 void        _cfw_platform_set_color(int fg_color, int bg_color);

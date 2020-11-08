@@ -105,6 +105,10 @@ CFWAPI void cfw_terminate(void)
     if (!__cfw.initialized)
         return;
 
+    // Clear callbacks
+    memset(&__cfw.callbacks, 0, sizeof(__cfw.callbacks));
+
+    // Terminate the platform specific code
     _cfw_platform_terminate();
 
     // The memset that sets the entire __cfw struct to 0 also sets
@@ -125,6 +129,7 @@ CFWAPI cfw__errorfun cfw_set_error_callback(cfw__errorfun cbfun)
 CFWAPI void cfw_refresh(void)
 {
     CFW_REQUIRE_INIT();
+    _cfw_poll_input();
     _cfw_platform_refresh();
 }
 
