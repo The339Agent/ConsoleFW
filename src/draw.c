@@ -471,6 +471,10 @@ CFWAPI void cfw_draw_str(int x, int y, const char *str)
         _cfw_platform_draw_str(x, y, str);
 }
 
+// In these following draw functions, they call other draw functions
+// that check if CFW is initialized, so there is no need to check for
+// the cfw init state in themselves.
+
 CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...)
 {
     // The longest possible formatted string is 1024 chars long.
@@ -484,6 +488,21 @@ CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...)
 
     // Draw the formatted string
     cfw_draw_str(x, y, message);
+}
+
+CFWAPI void cfw_draw_int(int x, int y, int i)
+{
+    cfw_draw_fmt_str(x, y, "%d", i);
+}
+
+CFWAPI void cfw_draw_float(int x, int y, float f)
+{
+    cfw_draw_fmt_str(x, y, "%f", f);
+}
+
+CFWAPI void cfw_draw_bool(int x, int y, cfw__bool b)
+{
+    cfw_draw_str(x, y, (b ? "true" : "false"));
 }
 
 CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)

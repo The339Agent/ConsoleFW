@@ -532,6 +532,42 @@ CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...);
 #endif
 
 /**
+ * @brief Draw an integer to the console.
+ * 
+ * This function draws the provided integer to the console at the
+ * given position.
+ * 
+ * @param x The X position to draw the int to.
+ * @param y The Y position to draw the int to.
+ * @param i The integer to draw to the console.
+ */
+CFWAPI void cfw_draw_int(int x, int y, int i);
+
+/**
+ * @brief Draw a float to the console.
+ * 
+ * This function draws the provided float to the console at the given
+ * position.
+ * 
+ * @param x The X position to draw the float to.
+ * @param y The Y position to draw the float to.
+ * @param f The float to draw to the console.
+ */
+CFWAPI void cfw_draw_float(int x, int y, float f);
+
+/**
+ * @brief Draw a boolean to the console.
+ * 
+ * This function draws the provided boolean to the console at the
+ * given position.
+ * 
+ * @param x The X position to draw the bool to.
+ * @param y The Y position to draw the bool to.
+ * @param b The boolean to draw to the console.
+ */
+CFWAPI void cfw_draw_bool(int x, int y, cfw__bool b);
+
+/**
  * @brief Draw a line polygon to the console.
  * 
  * This function draws a line of the set character to the console.
