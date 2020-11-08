@@ -10,6 +10,7 @@
  */
 
 #include <math.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -442,7 +443,7 @@ CFWAPI void cfw_draw_char(int x, int y, char c)
     _cfw_platform_draw_char(x, y, c);
 }
 
-CFWAPI void cfw_draw_str(int x, int y, const char* str)
+CFWAPI void cfw_draw_str(int x, int y, const char *str)
 {
     CFW_REQUIRE_INIT();
 
@@ -468,6 +469,21 @@ CFWAPI void cfw_draw_str(int x, int y, const char* str)
     else
         // Draw the string in its entirety
         _cfw_platform_draw_str(x, y, str);
+}
+
+CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...)
+{
+    // The longest possible formatted string is 1024 chars long.
+    char message[1024];
+
+    // Format the string
+    va_list va;
+    va_start(va, fmt);
+    vsnprintf(message, sizeof(message), fmt, va);
+    va_end(va);
+
+    // Draw the formatted string
+    cfw_draw_str(x, y, message);
 }
 
 CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)

@@ -508,7 +508,28 @@ CFWAPI void cfw_draw_char(int x, int y, char c);
  * @param y The Y position to start drawing the string to.
  * @param str The string to draw at the given position.
  */
-CFWAPI void cfw_draw_str(int x, int y, const char* str);
+CFWAPI void cfw_draw_str(int x, int y, const char *str);
+
+/**
+ * @brief Draw a formatted string to the console.
+ * 
+ * This function takes in a string, formats it, and draws it to the
+ * console at the given position.
+ * 
+ * The final string can maximum be 1024 chars long.
+ * 
+ * @param x The X position to start drawing the string to.
+ * @param y The Y position to start drawing the string to.
+ * @param fmt The string to format and then draw at the given
+ * position.
+ * @param ... The variables to format the string with.
+ */
+#if defined(__GNUC__)
+CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...)
+    __attribute__((format(printf, 3, 4)));
+#else
+CFWAPI void cfw_draw_fmt_str(int x, int y, const char *fmt, ...);
+#endif
 
 /**
  * @brief Draw a line polygon to the console.
