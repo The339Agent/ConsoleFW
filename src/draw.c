@@ -92,7 +92,7 @@ void draw_line(int x1, int y1, int x2, int y2, char c)
     for (; tile_count > 0; --tile_count)
     {
         // Draw the line character to the tile position
-        _cfw_platform_draw_char(x, y, c);
+        cfw_draw_char(x, y, c);
 
         // Check what axis should be advanced next
         if (advance_axis == 0)
@@ -232,14 +232,14 @@ void draw_circle_lines(int x, int y, int radius, char c)
     
     while (tile_y >= tile_x)
     {
-        _cfw_platform_draw_char(x - tile_x, y - tile_y, c);
-        _cfw_platform_draw_char(x - tile_y, y - tile_x, c);
-        _cfw_platform_draw_char(x + tile_y, y - tile_x, c);
-        _cfw_platform_draw_char(x + tile_x, y - tile_y, c);
-        _cfw_platform_draw_char(x - tile_x, y + tile_y, c);
-        _cfw_platform_draw_char(x - tile_y, y + tile_x, c);
-        _cfw_platform_draw_char(x + tile_y, y + tile_x, c);
-        _cfw_platform_draw_char(x + tile_x, y + tile_y, c);
+        cfw_draw_char(x - tile_x, y - tile_y, c);
+        cfw_draw_char(x - tile_y, y - tile_x, c);
+        cfw_draw_char(x + tile_y, y - tile_x, c);
+        cfw_draw_char(x + tile_x, y - tile_y, c);
+        cfw_draw_char(x - tile_x, y + tile_y, c);
+        cfw_draw_char(x - tile_y, y + tile_x, c);
+        cfw_draw_char(x + tile_y, y + tile_x, c);
+        cfw_draw_char(x + tile_x, y + tile_y, c);
         if (f < 0) f += 4 * tile_x++ + 6;
         else f += 4 * (tile_x++ - tile_y--) + 10;
     }
@@ -248,7 +248,7 @@ void draw_circle_lines(int x, int y, int radius, char c)
 void draw_strait(int sx, int ex, int ny, char c)
 {
     for (int i = sx; i <= ex; i++)
-        _cfw_platform_draw_char(i, ny, c);
+        cfw_draw_char(i, ny, c);
 }
 
 void draw_circle_fill(int x, int y, int radius, char c)
@@ -510,8 +510,8 @@ CFWAPI void cfw_draw_line(int x1, int y1, int x2, int y2, char c)
     switch (__cfw.polygon_mode)
     {
     case CFW_POINTS:
-        _cfw_platform_draw_char(x1, y1, c);
-        _cfw_platform_draw_char(x2, y2, c);
+        cfw_draw_char(x1, y1, c);
+        cfw_draw_char(x2, y2, c);
         break;
     case CFW_LINES:
     case CFW_FILL:
@@ -530,9 +530,9 @@ CFWAPI void cfw_draw_triangle(int x1, int y1, int x2, int y2,
     switch (__cfw.polygon_mode)
     {
     case CFW_POINTS:
-        _cfw_platform_draw_char(x1, y1, c);
-        _cfw_platform_draw_char(x2, y2, c);
-        _cfw_platform_draw_char(x3, y3, c);
+        cfw_draw_char(x1, y1, c);
+        cfw_draw_char(x2, y2, c);
+        cfw_draw_char(x3, y3, c);
         break;
     case CFW_LINES:
         draw_triangle_lines(x1, y1, x2, y2, x3, y3, c);
@@ -552,10 +552,10 @@ CFWAPI void cfw_draw_quad(int x1, int y1, int x2, int y2,
     switch (__cfw.polygon_mode)
     {
     case CFW_POINTS:
-        _cfw_platform_draw_char(x1, y1, c);
-        _cfw_platform_draw_char(x2, y2, c);
-        _cfw_platform_draw_char(x3, y3, c);
-        _cfw_platform_draw_char(x4, y4, c);
+        cfw_draw_char(x1, y1, c);
+        cfw_draw_char(x2, y2, c);
+        cfw_draw_char(x3, y3, c);
+        cfw_draw_char(x4, y4, c);
         break;
     case CFW_LINES:
         draw_quad_lines(x1, y1, x2, y2, x3, y3, x4, y4, c);
