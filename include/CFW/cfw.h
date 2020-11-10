@@ -283,6 +283,26 @@ CFWAPI void cfw_terminate(void);
 CFWAPI cfw__errorfun cfw_set_error_callback(cfw__errorfun cbfun);
 
 /**
+ * @brief Set the user pointer of the CFW instance.
+ * 
+ * This function sets the user-specified pointer of CFW. The value is
+ * stored until CFW is terminated. The initial value is `NULL`.
+ * 
+ * @param pointer The pointer to set as the user-pointer.
+ */
+CFWAPI void cfw_set_user_pointer(void *pointer);
+
+/**
+ * @brief Get the user pointer of the CFW instance.
+ * 
+ * This function gets the current user-specified pointer of CFW. The
+ * initial value is `NULL`.
+ * 
+ * @return The current user-pointer. 
+ */
+CFWAPI void *cfw_get_user_pointer(void);
+
+/**
  * @brief Refresh the console.
  * 
  * This function refreshes the content of the console.

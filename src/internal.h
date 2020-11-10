@@ -79,6 +79,8 @@ struct __cfx_library
 {
     cfw__bool       initialized;
 
+    void            *user_pointer;
+
     int             width;
     int             height;
 

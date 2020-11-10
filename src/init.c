@@ -126,6 +126,18 @@ CFWAPI cfw__errorfun cfw_set_error_callback(cfw__errorfun cbfun)
     return cbfun;
 }
 
+CFWAPI void cfw_set_user_pointer(void *pointer)
+{
+    CFW_REQUIRE_INIT();
+    __cfw.user_pointer = pointer;
+}
+
+CFWAPI void *cfw_get_user_pointer(void)
+{
+    CFW_REQUIRE_INIT_OR_RETURN(NULL);
+    return __cfw.user_pointer;
+}
+
 CFWAPI void cfw_refresh(void)
 {
     CFW_REQUIRE_INIT();
