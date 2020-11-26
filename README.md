@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[ConsoleFW](https://github.com/The339Agent/ConsoleFW) (*CFW*) is a C/C++ library for console application development using [nCurses](https://no.wikipedia.org/wiki/Ncurses).
+[ConsoleFW](https://github.com/UnnamedDeveloper/ConsoleFW) (*CFW*) is a C/C++ library for console application development using [nCurses](https://no.wikipedia.org/wiki/Ncurses).
 
 *CFW* is written using the C99 standard. It is currently not being tested on compilers, so compatibility must be checked by yourself.
 
